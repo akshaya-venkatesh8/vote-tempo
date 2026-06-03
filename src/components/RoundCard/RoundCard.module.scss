@@ -1,0 +1,101 @@
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: border-color 0.2s;
+
+  &.active {
+    border-color: rgba(124, 58, 237, 0.5);
+    box-shadow: 0 0 24px rgba(124, 58, 237, 0.15);
+  }
+
+  &.closed {
+    opacity: 0.7;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.roundNum {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+
+  &.badge_upcoming {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--warning);
+  }
+
+  &.badge_active {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--success);
+  }
+
+  &.badge_closed {
+    background: rgba(148, 163, 184, 0.1);
+    color: var(--text-muted);
+  }
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.meta {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+.time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.voted {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--success);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.voteBtn {
+  margin-top: 12px;
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  transition: opacity 0.2s, transform 0.1s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}

@@ -1,0 +1,110 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  font-size: 1.5rem;
+}
+
+.brandName {
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.adminBtn {
+  padding: 8px 14px;
+  background: rgba(124, 58, 237, 0.15);
+  color: #a78bfa;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(124, 58, 237, 0.25);
+  }
+}
+
+.signOutBtn {
+  padding: 8px 14px;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--text);
+  }
+}
+
+.main {
+  flex: 1;
+  padding: 24px 20px;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.welcome {
+  margin-bottom: 28px;
+}
+
+.greeting {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.sub {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.rounds {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+
+  span {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 12px;
+  }
+}

@@ -1,0 +1,125 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.back {
+  background: transparent;
+  color: var(--text);
+  font-size: 1.4rem;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--border);
+  }
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.live {
+  font-size: 0.8rem;
+  color: var(--success);
+  font-weight: 600;
+}
+
+.instruction {
+  padding: 20px 20px 12px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.teams {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 20px;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.error {
+  color: #f87171;
+  font-size: 0.9rem;
+  padding: 0 20px 12px;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.submitting {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 20px;
+}
+
+// Shared status screens
+.statusScreen,
+.confirmation {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+  gap: 12px;
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    transition: background 0.2s;
+
+    &:hover {
+      background: var(--bg-card-hover);
+    }
+  }
+}
+
+.emoji {
+  font-size: 4rem;
+  margin-bottom: 8px;
+}
+
+.sub {
+  font-size: 0.85rem;
+}

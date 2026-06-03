@@ -1,0 +1,56 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: check if the current user is an admin
+    function isAdmin() {
+      return request.auth != null &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Helper: check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // ── Rounds ─────────────────────────────────────────────────────────────
+    // Any signed-in user can read round config. No one can write via client.
+    match /rounds/{roundId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // ── Admins ─────────────────────────────────────────────────────────────
+    // Any signed-in user can read their own admin doc (to check their role).
+    // No one can write via client — managed in Firebase Console.
+    match /admins/{userId} {
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      allow write: if false;
+    }
+
+    // ── Votes ───────────────────────────────────────────────────────────────
+    // Ballots live at: /votes/{roundId}/ballots/{userId}
+    match /votes/{roundId}/ballots/{userId} {
+
+      // Admins can read all ballots. Voters can only read their own.
+      allow read: if isAdmin() || (isAuthenticated() && request.auth.uid == userId);
+
+      // A voter may cast exactly one ballot per round if:
+      //   1. They are authenticated
+      //   2. The document doesn't already exist (no double voting)
+      //   3. The userId field matches their own UID
+      //   4. The vote falls within the round's configured time window
+      allow create: if
+        isAuthenticated() &&
+        !exists(/databases/$(database)/documents/votes/$(roundId)/ballots/$(request.auth.uid)) &&
+        request.auth.uid == userId &&
+        request.resource.data.userId == request.auth.uid &&
+        get(/databases/$(database)/documents/rounds/$(roundId)).data.startTime <= request.time &&
+        request.time <= get(/databases/$(database)/documents/rounds/$(roundId)).data.endTime;
+
+      // No updates or deletes ever
+      allow update, delete: if false;
+    }
+  }
+}

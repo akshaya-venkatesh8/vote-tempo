@@ -1,0 +1,44 @@
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: left;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+
+  &:hover:not(:disabled) {
+    background: var(--bg-card-hover);
+    border-color: var(--primary);
+    transform: translateX(4px);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.name {
+  flex: 1;
+}
+
+.arrow {
+  font-size: 1.2rem;
+  color: var(--primary);
+  transition: transform 0.15s;
+
+  .card:hover:not(:disabled) & {
+    transform: translateX(4px);
+  }
+}
