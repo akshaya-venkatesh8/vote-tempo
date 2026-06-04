@@ -15,16 +15,15 @@ export default function LoginPage() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <div className={styles.brand}>
-          <img
-            src="/GouMo logo.jpg"
-            alt="GouMo Dance Chronicles"
-            className={styles.logo}
-          />
-          <div className={styles.brandText}>
-            <span className={styles.brandName}>GouMo Dance Chronicles</span>
-            <span className={styles.brandYear}>Annual Showcase 2026</span>
-          </div>
+        <img
+          src="/GouMo logo.jpg"
+          alt="GouMo Dance Chronicles"
+          className={styles.logo}
+        />
+        <div className={styles.brandText}>
+          <span className={styles.brandName}>GouMo</span>
+          <span className={styles.brandSub}>Dance Chronicles</span>
+          <span className={styles.brandYear}>Annual Showcase 2026</span>
         </div>
         <p className={styles.subtitle}>Audience Voting</p>
         <button className={styles.googleBtn} onClick={handleGoogleSignIn}>
@@ -34,7 +33,7 @@ export default function LoginPage() {
           />
           Sign in with Google
         </button>
-        <p className={styles.note}>One account · One vote per round</p>
+        <p className={styles.note}>May the best team win 🏆</p>
       </div>
 
       <footer className={styles.footer}>
