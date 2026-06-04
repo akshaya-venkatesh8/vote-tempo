@@ -1,11 +1,24 @@
-import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import styles from './LoginPage.module.scss';
 
 export default function LoginPage() {
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
-    signInWithRedirect(auth, provider);
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (e: any) {
+      // Popup blocked (in-app browsers like WhatsApp, Instagram) — fall back to redirect
+      if (
+        e.code === 'auth/popup-blocked' ||
+        e.code === 'auth/popup-closed-by-user' ||
+        e.code === 'auth/cancelled-popup-request'
+      ) {
+        signInWithRedirect(auth, provider);
+      } else {
+        console.error('Sign-in error:', e);
+      }
+    }
   };
 
   return (

@@ -8,15 +8,20 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Handle the result when returning from Google redirect sign-in
-    getRedirectResult(auth).catch((e) => {
-      console.error('Redirect sign-in error:', e);
-    });
+    let unsubscribe: () => void;
 
-    return onAuthStateChanged(auth, (u) => {
-      setUser(u);
-      setLoading(false);
-    });
+    // Wait for any pending redirect result to resolve first,
+    // then subscribe to auth state — prevents a flash to login page
+    getRedirectResult(auth)
+      .catch((e) => console.error('Redirect sign-in error:', e))
+      .finally(() => {
+        unsubscribe = onAuthStateChanged(auth, (u) => {
+          setUser(u);
+          setLoading(false);
+        });
+      });
+
+    return () => unsubscribe?.();
   }, []);
 
   return { user, loading };
