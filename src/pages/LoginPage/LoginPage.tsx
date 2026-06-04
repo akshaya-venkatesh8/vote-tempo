@@ -1,23 +1,21 @@
-import { GoogleAuthProvider, signInWithPopup, signInWithRedirect } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 import styles from './LoginPage.module.scss';
 
+function isInAppBrowser(): boolean {
+  const ua = navigator.userAgent || '';
+  return /WhatsApp|Instagram|FBAN|FBAV|FB_IAB|Line\/|Twitter/i.test(ua);
+}
+
 export default function LoginPage() {
+  const inAppBrowser = isInAppBrowser();
+
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
     } catch (e: any) {
-      // Popup blocked (in-app browsers like WhatsApp, Instagram) — fall back to redirect
-      if (
-        e.code === 'auth/popup-blocked' ||
-        e.code === 'auth/popup-closed-by-user' ||
-        e.code === 'auth/cancelled-popup-request'
-      ) {
-        signInWithRedirect(auth, provider);
-      } else {
-        console.error('Sign-in error:', e);
-      }
+      console.error('Sign-in error:', e);
     }
   };
 
@@ -35,13 +33,19 @@ export default function LoginPage() {
           <span className={styles.brandYear}>Annual Showcase 2026</span>
         </div>
         <p className={styles.subtitle}>Audience Voting</p>
-        <button className={styles.googleBtn} onClick={handleGoogleSignIn}>
-          <img
-            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-            alt="Google"
-          />
-          Sign in with Google
-        </button>
+        {inAppBrowser ? (
+          <div className={styles.inAppWarning}>
+            <p>⚠️ Open this link in <strong>Safari</strong> or <strong>Chrome</strong> to sign in with Google.</p>
+          </div>
+        ) : (
+          <button className={styles.googleBtn} onClick={handleGoogleSignIn}>
+            <img
+              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+              alt="Google"
+            />
+            Sign in with Google
+          </button>
+        )}
         <p className={styles.note}>May the best team win 🏆</p>
       </div>
 
