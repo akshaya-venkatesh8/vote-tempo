@@ -6,8 +6,8 @@
   transition: border-color 0.2s;
 
   &.active {
-    border-color: rgba(124, 58, 237, 0.5);
-    box-shadow: 0 0 24px rgba(124, 58, 237, 0.15);
+    border-color: rgba(25, 118, 210, 0.5);
+    box-shadow: 0 0 24px rgba(25, 118, 210, 0.15);
   }
 
   &.closed {
@@ -69,6 +69,13 @@
   color: var(--text-muted);
 }
 
+.countdown {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
 .voted {
   margin-top: 12px;
   padding: 10px 16px;
@@ -84,7 +91,7 @@
   margin-top: 12px;
   width: 100%;
   padding: 12px 20px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
+  background: linear-gradient(135deg, #0d47a1, #64b5f6);
   color: white;
   border-radius: var(--radius-sm);
   font-size: 1rem;

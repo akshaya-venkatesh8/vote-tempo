@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Round } from '../../types';
 import { getRoundStatus } from '../../utils/roundStatus';
 import { useVote } from '../../hooks/useVote';
+import { useCountdown, useCountdownToStart } from '../../hooks/useCountdown';
 import styles from './RoundCard.module.scss';
 
 interface Props {
@@ -14,6 +15,8 @@ export default function RoundCard({ round, roundNumber, userId }: Props) {
   const status = getRoundStatus(round);
   const { voted, loading } = useVote(round.id, userId);
   const navigate = useNavigate();
+  const countdown = useCountdown(round.endTime);
+  const countdownToStart = useCountdownToStart(round.startTime);
 
   return (
     <div className={`${styles.card} ${styles[status]}`}>
@@ -28,20 +31,23 @@ export default function RoundCard({ round, roundNumber, userId }: Props) {
       <p className={styles.meta}>{round.teams.length} teams competing</p>
 
       {status === 'upcoming' && (
-        <p className={styles.time}>Opens {round.startTime.toLocaleString()}</p>
+        <p className={styles.countdown}>🕐 {countdownToStart}</p>
       )}
       {status === 'closed' && (
         <p className={styles.time}>Ended {round.endTime.toLocaleString()}</p>
       )}
 
       {!loading && status === 'active' && (
-        voted ? (
-          <div className={styles.voted}>✅ Vote submitted!</div>
-        ) : (
-          <button className={styles.voteBtn} onClick={() => navigate(`/vote/${round.id}`)}>
-            Vote Now →
-          </button>
-        )
+        <>
+          {voted ? (
+            <div className={styles.voted}>✅ Vote submitted!</div>
+          ) : (
+            <button className={styles.voteBtn} onClick={() => navigate(`/vote/${round.id}`)}>
+              Vote Now →
+            </button>
+          )}
+          <p className={styles.countdown}>🕐 {countdown}</p>
+        </>
       )}
     </div>
   );

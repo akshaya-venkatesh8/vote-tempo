@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import type { User } from 'firebase/auth';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRounds } from '../../hooks/useRounds';
 import { useVote } from '../../hooks/useVote';
 import { getRoundStatus } from '../../utils/roundStatus';
 import TeamCard from '../../components/TeamCard/TeamCard';
+import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
 import styles from './VotePage.module.scss';
 
 interface Props {
@@ -19,6 +21,8 @@ export default function VotePage({ user }: Props) {
     roundId!,
     user.uid
   );
+  const [pendingTeamId, setPendingTeamId] = useState<string | null>(null);
+  const pendingTeam = round?.teams.find((t) => t.id === pendingTeamId);
 
   if (!round) {
     return (
@@ -79,7 +83,7 @@ export default function VotePage({ user }: Props) {
         </div>
       </header>
 
-      <p className={styles.instruction}>Tap the team you want to vote for</p>
+      <p className={styles.instruction}>Who do you think should win?</p>
 
       {error && <p className={styles.error}>{error}</p>}
 
@@ -88,13 +92,24 @@ export default function VotePage({ user }: Props) {
           <TeamCard
             key={team.id}
             team={team}
-            onVote={() => castVote(team.id)}
+            onVote={() => setPendingTeamId(team.id)}
             disabled={submitting || loading}
           />
         ))}
       </div>
 
       {submitting && <p className={styles.submitting}>Submitting your vote...</p>}
+
+      {pendingTeam && (
+        <ConfirmDialog
+          teamName={pendingTeam.name}
+          onConfirm={() => {
+            castVote(pendingTeam.id);
+            setPendingTeamId(null);
+          }}
+          onCancel={() => setPendingTeamId(null)}
+        />
+      )}
     </div>
   );
 }

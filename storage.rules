@@ -1,0 +1,11 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Team images are publicly readable, no one can write via client
+    match /teams/{imageFile} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
