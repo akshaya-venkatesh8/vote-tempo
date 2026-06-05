@@ -4,7 +4,7 @@ import { db } from '../firebase/config';
 
 export function useVote(roundId: string, userId: string | undefined) {
   const [voted, setVoted] = useState(false);
-  const [votedTeamId, setVotedTeamId] = useState<string | null>(null);
+  const [submittedScores, setSubmittedScores] = useState<Record<string, number> | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -18,31 +18,31 @@ export function useVote(roundId: string, userId: string | undefined) {
     getDoc(ballotRef).then((snap) => {
       if (snap.exists()) {
         setVoted(true);
-        setVotedTeamId(snap.data().teamId);
+        setSubmittedScores(snap.data().scores ?? null);
       }
       setLoading(false);
     });
   }, [roundId, userId]);
 
-  const castVote = async (teamId: string) => {
-    if (!userId || voted || submitting) return;
+  const castVote = async (scores: Record<string, number>) => {
+    if (!userId || submitting) return;
     setSubmitting(true);
     setError(null);
     try {
       const ballotRef = doc(db, 'votes', roundId, 'ballots', userId);
       await setDoc(ballotRef, {
         userId,
-        teamId,
+        scores,
         votedAt: serverTimestamp(),
       });
       setVoted(true);
-      setVotedTeamId(teamId);
+      setSubmittedScores(scores);
     } catch (e) {
-      setError('Failed to submit vote. Please try again.');
+      setError('Failed to submit scores. Please try again.');
     } finally {
       setSubmitting(false);
     }
   };
 
-  return { voted, votedTeamId, loading, submitting, error, castVote };
+  return { voted, submittedScores, loading, submitting, error, castVote };
 }

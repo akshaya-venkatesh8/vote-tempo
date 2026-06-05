@@ -7,7 +7,6 @@
   align-items: flex-end;
   justify-content: center;
   z-index: 100;
-  padding: 0 0 env(safe-area-inset-bottom, 0);
   animation: fadeIn 0.15s ease;
 }
 
@@ -16,40 +15,61 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: none;
   border-radius: 20px 20px 0 0;
-  padding: 32px 24px 40px;
+  padding: 28px 24px 40px;
   width: 100%;
   max-width: 500px;
   text-align: center;
   animation: slideUp 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .icon {
-  font-size: 2.5rem;
-  margin-bottom: 12px;
-}
-
-.heading {
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-size: 2.2rem;
   margin-bottom: 10px;
 }
 
-.team {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #64b5f6;
-  margin-bottom: 16px;
-  padding: 10px 20px;
-  background: rgba(25, 118, 210, 0.1);
-  border-radius: 10px;
-  border: 1px solid rgba(25, 118, 210, 0.2);
+.heading {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 6px;
 }
 
-.warning {
-  font-size: 0.85rem;
+.sub {
+  font-size: 0.82rem;
   color: var(--text-muted);
-  margin-bottom: 28px;
+  margin-bottom: 20px;
   line-height: 1.5;
+}
+
+.scoreList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.teamName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.teamScore {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #64b5f6;
 }
 
 .actions {
@@ -84,13 +104,8 @@
   font-weight: 700;
   transition: opacity 0.15s, transform 0.1s;
 
-  &:hover {
-    opacity: 0.92;
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
+  &:hover { opacity: 0.92; }
+  &:active { transform: scale(0.98); }
 }
 
 @keyframes fadeIn {

@@ -3,21 +3,20 @@ import styles from './BarChart.module.scss';
 
 interface Props {
   teams: Team[];
-  results: Record<string, number>;
-  total: number;
+  totals: Record<string, number>;
+  voterCount: number;
 }
 
-export default function BarChart({ teams, results, total }: Props) {
-  const sorted = [...teams].sort(
-    (a, b) => (results[b.id] || 0) - (results[a.id] || 0)
-  );
+export default function BarChart({ teams, totals, voterCount }: Props) {
+  const maxScore = Math.max(...teams.map((t) => totals[t.id] || 0), 1);
+  const sorted = [...teams].sort((a, b) => (totals[b.id] || 0) - (totals[a.id] || 0));
 
   return (
     <div className={styles.chart}>
       {sorted.map((team, i) => {
-        const count = results[team.id] || 0;
-        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
-        const isLeader = i === 0 && count > 0;
+        const total = totals[team.id] || 0;
+        const barPct = Math.round((total / maxScore) * 100);
+        const isLeader = i === 0 && total > 0;
 
         return (
           <div key={team.id} className={styles.row}>
@@ -26,19 +25,20 @@ export default function BarChart({ teams, results, total }: Props) {
                 {isLeader && <span className={styles.crown}>👑 </span>}
                 {team.name}
               </span>
-              <span className={styles.stats}>
-                {count} vote{count !== 1 ? 's' : ''} · {pct}%
-              </span>
+              <span className={styles.stats}>{total} / {voterCount * 10} pts</span>
             </div>
             <div className={styles.track}>
               <div
                 className={`${styles.bar} ${isLeader ? styles.leader : ''}`}
-                style={{ width: `${pct}%` }}
+                style={{ width: `${barPct}%` }}
               />
             </div>
           </div>
         );
       })}
+      {voterCount > 0 && (
+        <p className={styles.voterNote}>{voterCount} voter{voterCount !== 1 ? 's' : ''} · max {voterCount * 10} pts possible</p>
+      )}
     </div>
   );
 }

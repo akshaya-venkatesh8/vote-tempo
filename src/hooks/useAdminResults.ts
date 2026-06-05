@@ -2,21 +2,31 @@ import { useState, useEffect } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config';
 
-export function useAdminResults(roundId: string) {
-  const [results, setResults] = useState<Record<string, number>>({});
-  const [total, setTotal] = useState(0);
+export interface AdminResults {
+  totals: Record<string, number>; // teamId -> total score
+  voterCount: number;
+}
+
+export function useAdminResults(roundId: string): AdminResults {
+  const [totals, setTotals] = useState<Record<string, number>>({});
+  const [voterCount, setVoterCount] = useState(0);
 
   useEffect(() => {
     return onSnapshot(collection(db, 'votes', roundId, 'ballots'), (snap) => {
-      const counts: Record<string, number> = {};
+      const sums: Record<string, number> = {};
+      let count = 0;
       snap.docs.forEach((doc) => {
-        const teamId = doc.data().teamId as string;
-        counts[teamId] = (counts[teamId] || 0) + 1;
+        const scores = doc.data().scores as Record<string, number> | undefined;
+        if (!scores) return; // skip old single-vote ballots
+        count++;
+        Object.entries(scores).forEach(([teamId, score]) => {
+          sums[teamId] = (sums[teamId] || 0) + score;
+        });
       });
-      setResults(counts);
-      setTotal(snap.size);
+      setTotals(sums);
+      setVoterCount(count);
     });
   }, [roundId]);
 
-  return { results, total };
+  return { totals, voterCount };
 }

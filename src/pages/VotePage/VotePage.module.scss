@@ -2,7 +2,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-bottom: 40px;
+  padding-bottom: 100px;
 }
 
 .header {
@@ -24,10 +24,7 @@
   padding: 4px 8px;
   border-radius: var(--radius-sm);
   transition: background 0.15s;
-
-  &:hover {
-    background: var(--border);
-  }
+  &:hover { background: var(--border); }
 }
 
 .title {
@@ -43,12 +40,25 @@
 }
 
 .instruction {
-  padding: 20px 20px 12px;
-  color: var(--text-muted);
-  font-size: 0.9rem;
+  padding: 20px 20px 4px;
+  font-size: 1rem;
+  font-weight: 700;
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
+}
+
+.hint {
+  padding: 0 20px 16px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.editNote {
+  color: #64b5f6;
 }
 
 .teams {
@@ -61,6 +71,35 @@
   margin: 0 auto;
 }
 
+.submitRow {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 20px;
+  background: rgba(8, 8, 8, 0.95);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+}
+
+.submitBtn {
+  width: 100%;
+  max-width: 560px;
+  padding: 16px;
+  background: linear-gradient(135deg, #0d47a1, #64b5f6);
+  color: white;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 700;
+  transition: opacity 0.2s, transform 0.1s;
+
+  &:hover:not(:disabled) { opacity: 0.92; }
+  &:active:not(:disabled) { transform: scale(0.98); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
 .error {
   color: #f87171;
   font-size: 0.9rem;
@@ -70,14 +109,7 @@
   width: 100%;
 }
 
-.submitting {
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  margin-top: 20px;
-}
-
-// Shared status screens
+// Shared status/confirmation screens
 .statusScreen,
 .confirmation {
   min-height: 100vh;
@@ -89,15 +121,8 @@
   text-align: center;
   gap: 12px;
 
-  h2 {
-    font-size: 1.6rem;
-    font-weight: 700;
-  }
-
-  p {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-  }
+  h2 { font-size: 1.6rem; font-weight: 700; }
+  p { color: var(--text-muted); font-size: 0.95rem; }
 
   button {
     margin-top: 20px;
@@ -108,18 +133,31 @@
     border-radius: var(--radius-sm);
     font-size: 0.95rem;
     transition: background 0.2s;
-
-    &:hover {
-      background: var(--bg-card-hover);
-    }
+    &:hover { background: var(--bg-card-hover); }
   }
 }
 
-.emoji {
-  font-size: 4rem;
-  margin-bottom: 8px;
+.emoji { font-size: 4rem; margin-bottom: 8px; }
+.confirmSub { font-size: 0.85rem; }
+
+.submittedList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+  margin: 8px 0;
 }
 
-.sub {
-  font-size: 0.85rem;
+.submittedRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+
+  strong { color: #64b5f6; }
 }

@@ -46,11 +46,21 @@ service cloud.firestore {
         !exists(/databases/$(database)/documents/votes/$(roundId)/ballots/$(request.auth.uid)) &&
         request.auth.uid == userId &&
         request.resource.data.userId == request.auth.uid &&
+        request.resource.data.scores is map &&
         get(/databases/$(database)/documents/rounds/$(roundId)).data.startTime <= request.time &&
         request.time <= get(/databases/$(database)/documents/rounds/$(roundId)).data.endTime;
 
-      // No updates or deletes ever
-      allow update, delete: if false;
+      // Updates allowed within the time window (to change scores)
+      allow update: if
+        isAuthenticated() &&
+        request.auth.uid == userId &&
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.scores is map &&
+        get(/databases/$(database)/documents/rounds/$(roundId)).data.startTime <= request.time &&
+        request.time <= get(/databases/$(database)/documents/rounds/$(roundId)).data.endTime;
+
+      // No deletes ever
+      allow delete: if false;
     }
   }
 }

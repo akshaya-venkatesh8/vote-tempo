@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useRounds } from '../../hooks/useRounds';
 import { useVote } from '../../hooks/useVote';
 import { getRoundStatus } from '../../utils/roundStatus';
-import TeamCard from '../../components/TeamCard/TeamCard';
+import ScoreCard from '../../components/ScoreCard/ScoreCard';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
 import styles from './VotePage.module.scss';
 
@@ -17,22 +17,36 @@ export default function VotePage({ user }: Props) {
   const navigate = useNavigate();
   const { rounds } = useRounds();
   const round = rounds.find((r) => r.id === roundId);
-  const { voted, votedTeamId, loading, submitting, error, castVote } = useVote(
+  const { voted, submittedScores, loading, submitting, error, castVote } = useVote(
     roundId!,
     user.uid
   );
-  const [pendingTeamId, setPendingTeamId] = useState<string | null>(null);
-  const pendingTeam = round?.teams.find((t) => t.id === pendingTeamId);
+
+  const [scores, setScores] = useState<Record<string, number>>({});
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [initialised, setInitialised] = useState(false);
 
   if (!round) {
-    return (
-      <div className="loading-screen">
-        <div className="spinner" />
-      </div>
-    );
+    return <div className="loading-screen"><div className="spinner" /></div>;
   }
 
   const status = getRoundStatus(round);
+
+  // Once we know if the user voted, seed scores from submitted or default to 5
+  if (!loading && !initialised) {
+    const seed = submittedScores ?? {};
+    const seeded = round.teams.reduce<Record<string, number>>((acc, team) => {
+      acc[team.id] = seed[team.id] ?? 5;
+      return acc;
+    }, {});
+    setScores(seeded);
+    setInitialised(true);
+  }
+
+  const currentScores = round.teams.reduce<Record<string, number>>((acc, team) => {
+    acc[team.id] = scores[team.id] ?? 5;
+    return acc;
+  }, {});
 
   if (status === 'upcoming') {
     return (
@@ -46,6 +60,24 @@ export default function VotePage({ user }: Props) {
   }
 
   if (status === 'closed') {
+    if (!loading && voted && submittedScores) {
+      return (
+        <div className={styles.confirmation}>
+          <span className={styles.emoji}>✅</span>
+          <h2>Your Scores</h2>
+          <p className={styles.confirmSub}>Voting is now closed.</p>
+          <div className={styles.submittedList}>
+            {round.teams.map((team) => (
+              <div key={team.id} className={styles.submittedRow}>
+                <span>{team.name}</span>
+                <strong>{submittedScores[team.id]} / 10</strong>
+              </div>
+            ))}
+          </div>
+          <button onClick={() => navigate('/dashboard')}>← Back to Dashboard</button>
+        </div>
+      );
+    }
     return (
       <div className={styles.statusScreen}>
         <span className={styles.emoji}>🔒</span>
@@ -56,27 +88,10 @@ export default function VotePage({ user }: Props) {
     );
   }
 
-  if (!loading && voted) {
-    const votedTeam = round.teams.find((t) => t.id === votedTeamId);
-    return (
-      <div className={styles.confirmation}>
-        <span className={styles.emoji}>✅</span>
-        <h2>Vote Submitted!</h2>
-        <p>
-          You voted for <strong>{votedTeam?.name}</strong>
-        </p>
-        <p className={styles.sub}>Your vote has been recorded. Thank you!</p>
-        <button onClick={() => navigate('/dashboard')}>← Back to Dashboard</button>
-      </div>
-    );
-  }
-
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <button className={styles.back} onClick={() => navigate('/dashboard')}>
-          ←
-        </button>
+        <button className={styles.back} onClick={() => navigate('/dashboard')}>←</button>
         <div>
           <h1 className={styles.title}>{round.title}</h1>
           <span className={styles.live}>🟢 Voting Live</span>
@@ -84,30 +99,45 @@ export default function VotePage({ user }: Props) {
       </header>
 
       <p className={styles.instruction}>Who do you think should win?</p>
+      <p className={styles.hint}>
+        Score each team from 1 to 10
+        {voted && <span className={styles.editNote}> · You can update your scores while voting is open</span>}
+      </p>
 
       {error && <p className={styles.error}>{error}</p>}
 
       <div className={styles.teams}>
         {round.teams.map((team) => (
-          <TeamCard
+          <ScoreCard
             key={team.id}
             team={team}
-            onVote={() => setPendingTeamId(team.id)}
+            score={currentScores[team.id]}
+            onChange={(val) => setScores((prev) => ({ ...prev, [team.id]: val }))}
             disabled={submitting || loading}
           />
         ))}
       </div>
 
-      {submitting && <p className={styles.submitting}>Submitting your vote...</p>}
+      <div className={styles.submitRow}>
+        <button
+          className={styles.submitBtn}
+          onClick={() => setShowConfirm(true)}
+          disabled={submitting || loading}
+        >
+          {submitting ? 'Submitting…' : voted ? 'Review & Update →' : 'Review & Submit →'}
+        </button>
+      </div>
 
-      {pendingTeam && (
+      {showConfirm && (
         <ConfirmDialog
-          teamName={pendingTeam.name}
+          teams={round.teams}
+          scores={currentScores}
+          isUpdate={voted}
           onConfirm={() => {
-            castVote(pendingTeam.id);
-            setPendingTeamId(null);
+            castVote(currentScores);
+            setShowConfirm(false);
           }}
-          onCancel={() => setPendingTeamId(null)}
+          onCancel={() => setShowConfirm(false)}
         />
       )}
     </div>

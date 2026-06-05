@@ -11,7 +11,7 @@ interface Props {
 
 export default function AdminRoundResults({ round, roundNumber }: Props) {
   const status = getRoundStatus(round);
-  const { results, total } = useAdminResults(round.id);
+  const { totals, voterCount } = useAdminResults(round.id);
 
   return (
     <div className={styles.container}>
@@ -26,14 +26,14 @@ export default function AdminRoundResults({ round, roundNumber }: Props) {
       </div>
 
       <p className={styles.total}>
-        Total votes: <strong>{total}</strong>
+        Voters: <strong>{voterCount}</strong>
         {status === 'active' && <span className={styles.pulse}> · Live</span>}
       </p>
 
-      {total === 0 ? (
-        <p className={styles.noVotes}>No votes yet.</p>
+      {voterCount === 0 ? (
+        <p className={styles.noVotes}>No scores submitted yet.</p>
       ) : (
-        <BarChart teams={round.teams} results={results} total={total} />
+        <BarChart teams={round.teams} totals={totals} voterCount={voterCount} />
       )}
     </div>
   );

@@ -16,6 +16,6 @@ export type RoundStatus = 'upcoming' | 'active' | 'closed';
 
 export interface Ballot {
   userId: string;
-  teamId: string;
+  scores: Record<string, number>; // teamId -> score (1–10)
   votedAt: Date;
 }
