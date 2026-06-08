@@ -1,10 +1,9 @@
 import type { User } from 'firebase/auth';
-import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../../firebase/config';
 import { useRounds } from '../../hooks/useRounds';
 import { useAdmin } from '../../hooks/useAdmin';
 import RoundCard from '../../components/RoundCard/RoundCard';
+import AppHeader from '../../components/AppHeader/AppHeader';
 import styles from './DashboardPage.module.scss';
 
 interface Props {
@@ -18,25 +17,15 @@ export default function DashboardPage({ user }: Props) {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.brand}>
-          <img src="/GouMo logo.jpg" alt="GouMo" className={styles.logo} />
-          <div className={styles.brandText}>
-            <span className={styles.brandName}>GouMo Dance Chronicles</span>
-            <span className={styles.brandYear}>Annual Showcase 2026</span>
-          </div>
-        </div>
-        <div className={styles.actions}>
-          {isAdmin && (
-            <button className={styles.adminBtn} onClick={() => navigate('/admin')}>
-              📊 Results
-            </button>
-          )}
-          <button className={styles.signOutBtn} onClick={() => signOut(auth)}>
-            Sign out
+      <AppHeader isAdmin={false} />
+
+      {isAdmin && (
+        <div className={styles.adminBar}>
+          <button className={styles.adminBtn} onClick={() => navigate('/admin')}>
+            📊 View Live Results
           </button>
         </div>
-      </header>
+      )}
 
       <main className={styles.main}>
         <div className={styles.welcome}>

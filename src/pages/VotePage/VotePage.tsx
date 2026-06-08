@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useRounds } from '../../hooks/useRounds';
 import { useVote } from '../../hooks/useVote';
 import { getRoundStatus } from '../../utils/roundStatus';
+import { useCountdown } from '../../hooks/useCountdown';
 import ScoreCard from '../../components/ScoreCard/ScoreCard';
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog';
 import styles from './VotePage.module.scss';
@@ -25,6 +26,7 @@ export default function VotePage({ user }: Props) {
   const [scores, setScores] = useState<Record<string, number>>({});
   const [showConfirm, setShowConfirm] = useState(false);
   const [initialised, setInitialised] = useState(false);
+  const countdown = useCountdown(round?.endTime ?? new Date());
 
   if (!round) {
     return <div className="loading-screen"><div className="spinner" /></div>;
@@ -94,7 +96,10 @@ export default function VotePage({ user }: Props) {
         <button className={styles.back} onClick={() => navigate('/dashboard')}>←</button>
         <div>
           <h1 className={styles.title}>{round.title}</h1>
-          <span className={styles.live}>🟢 Voting Live</span>
+          <div className={styles.liveMeta}>
+            <span className={styles.live}>🟢 Live</span>
+            <span className={styles.timeLeft}>🕐 {countdown}</span>
+          </div>
         </div>
       </header>
 
@@ -103,6 +108,8 @@ export default function VotePage({ user }: Props) {
         Score each team from 1 to 10
         {voted && <span className={styles.editNote}> · You can update your scores while voting is open</span>}
       </p>
+
+      <p className={styles.autoNote}>💾 Save anytime — your last saved scores are final when the round closes.</p>
 
       {error && <p className={styles.error}>{error}</p>}
 
@@ -124,7 +131,7 @@ export default function VotePage({ user }: Props) {
           onClick={() => setShowConfirm(true)}
           disabled={submitting || loading}
         >
-          {submitting ? 'Submitting…' : voted ? 'Review & Update →' : 'Review & Submit →'}
+          {submitting ? 'Saving…' : voted ? 'Save updated scores →' : 'Save scores →'}
         </button>
       </div>
 

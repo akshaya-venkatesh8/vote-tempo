@@ -33,10 +33,23 @@
   margin-bottom: 2px;
 }
 
+.liveMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+
 .live {
   font-size: 0.8rem;
   color: var(--success);
   font-weight: 600;
+}
+
+.timeLeft {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 .instruction {
@@ -59,6 +72,16 @@
 
 .editNote {
   color: #64b5f6;
+}
+
+.autoNote {
+  padding: 0 20px 16px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  line-height: 1.5;
 }
 
 .teams {
