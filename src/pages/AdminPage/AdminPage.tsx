@@ -16,9 +16,7 @@ export default function AdminPage({ user: _user }: Props) {
       <AppHeader isAdmin pageTitle="Results" />
 
       <main className={styles.main}>
-        <p className={styles.adminNote}>Admin view · Updates in real time</p>
-
-        {loading ? (
+{loading ? (
           <div className="spinner" />
         ) : rounds.length === 0 ? (
           <p className={styles.empty}>No rounds configured yet.</p>

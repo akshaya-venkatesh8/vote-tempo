@@ -22,7 +22,7 @@ export default function DashboardPage({ user }: Props) {
       {isAdmin && (
         <div className={styles.adminBar}>
           <button className={styles.adminBtn} onClick={() => navigate('/admin')}>
-            📊 View Live Results
+            📊 View Results
           </button>
         </div>
       )}

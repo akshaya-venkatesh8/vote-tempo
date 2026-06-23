@@ -1,4 +1,5 @@
 import { signOut } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase/config';
 import styles from './AppHeader.module.scss';
 
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export default function AppHeader({ pageTitle, isAdmin = false }: Props) {
+  const navigate = useNavigate();
   return (
     <header className={styles.header}>
       <div className={styles.brand}>
@@ -27,6 +29,7 @@ export default function AppHeader({ pageTitle, isAdmin = false }: Props) {
         <>
           <div className={styles.gap} />
           <div className={styles.actions}>
+            <button className={styles.back} onClick={() => navigate('/dashboard')}>← Dashboard</button>
             <span className={styles.pageTitle}>{pageTitle}</span>
             <button className={styles.signOut} onClick={() => signOut(auth)}>
               Sign out
