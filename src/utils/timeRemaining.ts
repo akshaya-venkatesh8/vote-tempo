@@ -3,6 +3,10 @@ function formatDuration(ms: number, prefix: string): string {
   const totalHours = Math.floor(totalMinutes / 60);
   const totalDays = Math.floor(totalHours / 24);
 
+  if (totalMinutes < 1) {
+    return `${prefix} less than a minute`;
+  }
+
   if (totalMinutes < 60) {
     return `${prefix} ${totalMinutes} minute${totalMinutes !== 1 ? 's' : ''}`;
   }
