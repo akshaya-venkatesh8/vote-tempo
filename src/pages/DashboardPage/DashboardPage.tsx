@@ -2,7 +2,9 @@ import type { User } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useRounds } from '../../hooks/useRounds';
 import { useAdmin } from '../../hooks/useAdmin';
+import { useWinners } from '../../hooks/useWinners';
 import RoundCard from '../../components/RoundCard/RoundCard';
+import WinnersDisplay from '../../components/WinnersDisplay/WinnersDisplay';
 import AppHeader from '../../components/AppHeader/AppHeader';
 import styles from './DashboardPage.module.scss';
 
@@ -13,6 +15,7 @@ interface Props {
 export default function DashboardPage({ user }: Props) {
   const { rounds, loading } = useRounds();
   const { isAdmin } = useAdmin(user.uid);
+  const { winners } = useWinners(rounds);
   const navigate = useNavigate();
 
   return (
@@ -35,7 +38,9 @@ export default function DashboardPage({ user }: Props) {
           <p className={styles.sub}>Tap a live round below to cast your vote</p>
         </div>
 
-        {loading ? (
+        {winners ? (
+          <WinnersDisplay winners={winners} />
+        ) : loading ? (
           <div className="spinner" />
         ) : rounds.length === 0 ? (
           <div className={styles.empty}>
