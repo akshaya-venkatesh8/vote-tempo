@@ -22,7 +22,7 @@ export default function BarChart({ teams, totals, averages, distribution, voterC
 
   return (
     <div className={styles.chart}>
-      {sorted.map((team, i) => {
+      {sorted.map((team) => {
         const total = totals[team.id] || 0;
         const avg = averages[team.id] ?? 0;
         const barPct = Math.round((total / maxScore) * 100);
