@@ -32,7 +32,7 @@ export default function ConfirmDialog({ teams, scores, isUpdate = false, onConfi
 
         <div className={styles.actions}>
           <button className={styles.cancelBtn} onClick={onCancel}>Go back</button>
-          <button className={styles.confirmBtn} onClick={onConfirm}>{isUpdate ? 'Save updated scores' : 'Save scores'}</button>
+          <button className={styles.confirmBtn} onClick={onConfirm}>{isUpdate ? 'Update scores' : 'Submit scores'}</button>
         </div>
       </div>
     </div>

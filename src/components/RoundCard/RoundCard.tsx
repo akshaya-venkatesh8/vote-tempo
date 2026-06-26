@@ -41,7 +41,7 @@ export default function RoundCard({ round, roundNumber, userId }: Props) {
         <>
           {voted ? (
             <button className={styles.updateBtn} onClick={() => navigate(`/vote/${round.id}`)}>
-              ✅ Scores saved · Update →
+              ✅ Scores submitted · Update →
             </button>
           ) : (
             <button className={styles.voteBtn} onClick={() => navigate(`/vote/${round.id}`)}>

@@ -131,7 +131,7 @@ export default function VotePage({ user }: Props) {
           onClick={() => setShowConfirm(true)}
           disabled={submitting || loading}
         >
-          {submitting ? 'Saving…' : voted ? 'Save updated scores →' : 'Save scores →'}
+          {submitting ? 'Submitting…' : voted ? 'Update scores →' : 'Submit scores →'}
         </button>
       </div>
 
