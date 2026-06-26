@@ -14,6 +14,7 @@ export default function BarChart({ teams, totals, averages, distribution, voterC
   const [openTeamId, setOpenTeamId] = useState<string | null>(null);
   const maxScore = Math.max(...teams.map((t) => totals[t.id] || 0), 1);
   const sorted = [...teams].sort((a, b) => (totals[b.id] || 0) - (totals[a.id] || 0));
+  const topScore = totals[sorted[0]?.id] || 0;
 
   const toggle = (teamId: string) => {
     setOpenTeamId((prev) => (prev === teamId ? null : teamId));
@@ -25,7 +26,7 @@ export default function BarChart({ teams, totals, averages, distribution, voterC
         const total = totals[team.id] || 0;
         const avg = averages[team.id] ?? 0;
         const barPct = Math.round((total / maxScore) * 100);
-        const isLeader = i === 0 && total > 0;
+        const isLeader = total > 0 && total === topScore;
         const isOpen = openTeamId === team.id;
         const dist = distribution[team.id] || {};
 
