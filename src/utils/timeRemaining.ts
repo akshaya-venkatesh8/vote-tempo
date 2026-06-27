@@ -1,5 +1,5 @@
 function formatDuration(ms: number, prefix: string): string {
-  const totalMinutes = Math.floor(ms / 1000 / 60);
+  const totalMinutes = Math.ceil(ms / 1000 / 60);
   const totalHours = Math.floor(totalMinutes / 60);
   const totalDays = Math.floor(totalHours / 24);
 
