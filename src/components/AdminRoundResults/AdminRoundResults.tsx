@@ -17,7 +17,7 @@ export default function AdminRoundResults({ round, roundNumber }: Props) {
     <div className={styles.container}>
       <div className={styles.header}>
         <div>
-          <p className={styles.roundLabel}>Round {roundNumber}</p>
+          <p className={styles.roundLabel}>{roundNumber === 1 ? 'Solo Round' : roundNumber === 2 ? 'Duo/Trio Round' : `Round ${roundNumber}`}</p>
           <h2 className={styles.title}>{round.title}</h2>
         </div>
         <span className={`${styles.badge} ${styles[`badge_${status}`]}`}>

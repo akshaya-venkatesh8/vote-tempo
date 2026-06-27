@@ -21,7 +21,7 @@ export default function RoundCard({ round, roundNumber, userId }: Props) {
   return (
     <div className={`${styles.card} ${styles[status]}`}>
       <div className={styles.header}>
-        <span className={styles.roundNum}>Round {roundNumber}</span>
+        <span className={styles.roundNum}>{roundNumber === 1 ? 'Solo Round' : roundNumber === 2 ? 'Duo/Trio Round' : `Round ${roundNumber}`}</span>
         <span className={`${styles.badge} ${styles[`badge_${status}`]}`}>
           {status === 'upcoming' ? '⏳ Upcoming' : status === 'active' ? '🟢 Live' : '🔒 Closed'}
         </span>
