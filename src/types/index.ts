@@ -29,7 +29,6 @@ export interface Winners {
   solo: {
     winner1: WinnerEntry;
     winner2: WinnerEntry;
-    runnerUp: WinnerEntry;
     secondRunnerUp: WinnerEntry;
   };
   duoTrio: {

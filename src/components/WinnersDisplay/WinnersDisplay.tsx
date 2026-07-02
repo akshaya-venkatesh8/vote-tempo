@@ -60,7 +60,6 @@ export default function WinnersDisplay({ winners }: Props) {
         entries={[
           { entry: winners.solo.winner1, label: 'Winner', medal: MEDALS[0] },
           { entry: winners.solo.winner2, label: 'Winner', medal: MEDALS[0] },
-          { entry: winners.solo.runnerUp, label: 'Runner Up', medal: MEDALS[1] },
           { entry: winners.solo.secondRunnerUp, label: '2nd Runner Up', medal: MEDALS[2] },
         ]}
       />
