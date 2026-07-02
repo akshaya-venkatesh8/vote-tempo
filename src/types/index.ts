@@ -27,7 +27,8 @@ export interface WinnerEntry {
 
 export interface Winners {
   solo: {
-    winner: WinnerEntry;
+    winner1: WinnerEntry;
+    winner2: WinnerEntry;
     runnerUp: WinnerEntry;
     secondRunnerUp: WinnerEntry;
   };
